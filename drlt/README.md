@@ -18,7 +18,7 @@
 
 ## Classes
 ### Agent list(drlt.agents)
-* Deep SARSA : deepSARSA.py - DeepSARSA_Agent() in /agents/deepSARSA.py
+* Deep SARSA : DeepSARSA_Agent() in /agents/deepSARSA.py
 * DQN(Deep Q Network) : DQN_Agent() in /agents/dqn.py
 * Monte-Carlo Policy Gradient(REINFORCE Algorithm) : REINFORCE_Agent() in /agents/mc_pg.py
 * A2C(Advantage Actor-Critic) : A2C_Agent() in /agents/a2c.py
