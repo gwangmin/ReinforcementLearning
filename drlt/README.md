@@ -9,14 +9,14 @@
   
   
   
-## Required package
+## Required packages
 * tensorflow
 * keras
 * gym
 * numpy
 * matplotlib
 
-## Classes
+## Contents
 ### Agent list(drlt.agents)
 * Deep SARSA : DeepSARSA_Agent() in /agents/deepSARSA.py
 * DQN(Deep Q Network) : DQN_Agent() in /agents/dqn.py

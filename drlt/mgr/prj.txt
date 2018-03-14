@@ -1,0 +1,25 @@
+2018.1.25 ~ 2.21 ~ 
+
+toDo:
+rearrange method's define order
+rearrange method's parameter order
+- add resume, render function
+add auto preproc func function
+Test and delete target_critic code in a2c.py
+env_wrapper.py upgrade
+- upgrade a2c.py, a3c.py build model method to use keras.models.Model
+add agent(a3c) - deepSARSA, DQN, MC-PG, A2C
+upgrade a3c.py to one build method, use multiprocessing
+create api doc
+create all agent's super class or global function(very difficult)
+edit a2c.py, a3c.py update function to model.compile()
+define 'how to use'
+Add table()
+Add env_detail()
+Add about DeterministicFrozenLake ex) key, register
+
+
+
+Release guide:
+move mgr dir.
+
