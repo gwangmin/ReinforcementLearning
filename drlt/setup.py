@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(name='drlt',
 		version='1.0.0',
-		url='https://github.com/gwangmin/ReinforcementLearning',
+		url='https://github.com/gwangmin/ReinforcementLearning/tree/master/drlt',
 		author='gwangmin',
 		author_email='ygm.gwangmin@gmail.com',
 		license='MIT',
