@@ -1,4 +1,5 @@
-# Deep Reinforcement Learning Toolkit v1.0.0
+Deep Reinforcement Learning Toolkit v1.0.0
+===========================================
 * This toolkit provides Deep Reinforcement Learning agents.
 * This toolkit tested on Python 2.7, Python 3.5
 * I recommend you to know about deep reinforcement learning before use it.
