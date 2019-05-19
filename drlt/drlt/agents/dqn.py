@@ -5,20 +5,24 @@ from keras.layers import Dense
 from keras.models import Sequential
 from keras.optimizers import Adam
 
-# DQN(Deep Q Network) Agent
-# agent.train() raise exception. For more detailed information, please show the train() method.
 class DQN_Agent(object):
-	# Initializer
-	#
-	# state_size: Network input size.
-	# action_size: Network output length.
-	# gamma: (optional) Discount factor. Default 0.99
-	# optimizer: (optional) Optimizer. Default Adam(lr=0.001)
-	# epsilon: (optional) Tuple, (epsilon,decay_rate,epsilon_min). Default (1.0, 0.999, 0.1).
-	# replay_size: (optional) Max length for replay memory. Default 2000.
-	# batch_size: (optional) Batch size for one training. Default 64.
-	# resume: (optional) Load model from this path. If None, do not load. Default None.
-	def __init__(self, state_size, action_size, gamma=0.99, optimizer=Adam(lr=0.001), epsilon=(1.0,0.999,0.1), replay_size=2000, batch_size=64, resume=None):
+	'''
+	DQN(Deep Q Network) Agent
+	agent.train() raise exception. For more detailed information, please show the train() method.
+	'''
+	def __init__(self, state_size, action_size, gamma=0.99, optimizer=Adam(lr=0.001), epsilon=(1.0,0.999,0.1), replay_size=2000, batch_size=64, resume_path=None):
+		'''
+		Initializer
+
+		state_size: Observation space size.
+		action_size: Action space size.
+		gamma: (optional) Discount factor. Default 0.99
+		optimizer: (optional) Optimizer. Default Adam(lr=0.001)
+		epsilon: (optional) Tuple, (epsilon,decay_rate,epsilon_min). Default (1.0, 0.999, 0.1).
+		replay_size: (optional) Max length for replay memory. Default 2000.
+		batch_size: (optional) Batch size for one training. Default 64.
+		resume_path: (optional) Load model from this path. If None, do not load. Default None.
+		'''
 		self.state_size = state_size
 		self.action_size = action_size
 		self.gamma = gamma
@@ -38,31 +42,41 @@ class DQN_Agent(object):
 		self.memory = deque(maxlen=replay_size)
 
 		# resume
-		if resume != None: self.load(resume)
+		if resume_path != None:
+			self.load(resume_path)
+			self.sync_networks()
 
-	# Load the model
-	#
-	# path: Load from this path.
 	def load(self,path):
+		'''
+		Load the model
+
+		path: Load from this path.
+		'''
 		self.model.load_weights(path)
 
-	# Save the model
-	#
-	# path: saved to this path.
 	def save(self,path):
+		'''
+		Save the model
+
+		path: saved to this path.
+		'''
 		self.model.save_weights(path)
 
-	# Sync networks
 	def sync_networks(self):
+		'''
+		Sync networks
+		'''
 		self.target_model.set_weights(self.model.get_weights())
 
-	# Build model.
-	# If you want to change this model, override this method.
-	#
-	# optimizer: Optimizer.
-	#
-	# Return - Q network
 	def build_model(self, optimizer):
+		'''
+		Build model.
+		If you want to change this model, override this method.
+
+		optimizer: Optimizer.
+
+		Return - Q network
+		'''
 		model = Sequential()
 		model.add(Dense(50, input_dim=self.state_size, activation='relu', kernel_initializer='he_uniform'))
 		model.add(Dense(50, activation='relu', kernel_initializer='he_uniform'))
@@ -70,14 +84,16 @@ class DQN_Agent(object):
 		model.compile(loss='mse',optimizer=optimizer)
 		return model
 
-	# Select action
-	#
-	# state: Current state.
-	#
-	# Return - selected action
 	def select_action(self, state):
+		'''
+		Select action
+
+		state: Current state.
+
+		Return - selected action
+		'''
 		# epsilon decay
-		if self.epsilon >= self.epsilon_min:
+		if self.epsilon > self.epsilon_min:
 			tmp = self.epsilon * self.decay_rate
 			if tmp >= self.epsilon_min: self.epsilon = tmp
 
@@ -88,15 +104,19 @@ class DQN_Agent(object):
 			q = self.model.predict(state)[0]
 			return np.argmax(q)
 
-	# Append sample to replay memory
-	#
-	# state, action, reward, next_state, done: Samples to appended.
 	def append(self, state, action, reward, next_state, done):
+		'''
+		Append sample to replay memory
+
+		state, action, reward, next_state, done: Samples to appended.
+		'''
 		self.memory.append((state, action, reward, next_state, done))
 
-	# Experience replay
-	# If replay memory length is too short, raise exception.
 	def train(self):
+		'''
+		Experience replay
+		If replay memory length is too short, raise exception.
+		'''
 		# length check
 		if len(self.memory) < self.batch_size:
 			raise Exception('Replay memory length is too short!')

@@ -4,17 +4,19 @@ from keras.layers import Input, Dense
 from keras.models import Model
 from keras.optimizers import Adam
 
-# A2C(Advantage Actor-Critic Algorithm) Agent
 class A2C_Agent(object):
-	# Initializer
-	#
-	# state_size: Network input size.
-	# action_size: Policy length.
-	# gamma: (optional) Discount factor. Default 0.99
-	# actor_optimizer: (optional) Actor's optimizer. Default Adam(lr=0.001).
-	# critic_optimizer: (optional) Critic's optimizer. Default Adam(lr=0.005).
-	# resume: (optional) Load model from this path. If None, do not load. Default None.
-	def __init__(self, state_size, action_size, gamma=0.99, actor_optimizer=Adam(lr=0.001), critic_optimizer=Adam(lr=0.005), resume=None):
+	'''A2C(Advantage Actor-Critic Algorithm) Agent'''
+	def __init__(self, state_size, action_size, gamma=0.99, actor_optimizer=Adam(lr=0.001), critic_optimizer=Adam(lr=0.005), resume_path=None):
+		'''
+		Initializer
+
+		state_size: Network input size.
+		action_size: Policy length.
+		gamma: (optional) Discount factor. Default 0.99
+		actor_optimizer: (optional) Actor's optimizer. Default Adam(lr=0.001).
+		critic_optimizer: (optional) Critic's optimizer. Default Adam(lr=0.005).
+		resume_path: (optional) Tuple, (actor path, critic path). Load model from this path. If None, do not load. Default None.
+		'''
 		self.state_size = state_size
 		self.action_size = action_size
 		self.gamma = gamma
@@ -26,27 +28,33 @@ class A2C_Agent(object):
 		self.critic_update = self.build_critic_update(critic_optimizer)
 
 		# resume
-		if resume != None: self.load(resume)
+		if resume_path != None: self.load(resume_path)
 
-	# Load the model
-	#
-	# path: Load from this path.
 	def load(self,path):
-		self.actor.load_weights(path)
-		self.critic.load_weights(path)
+		'''
+		Load the model
 
-	# Save the model
-	#
-	# path: saved to this path.
+		path: Load from this path. (actor path, critic path)
+		'''
+		self.actor.load_weights(path[0])
+		self.critic.load_weights(path[1])
+
 	def save(self,path):
-		self.actor.save_weights(path)
-		self.critic.save_weights(path)
+		'''
+		Save the model
 
-	# Build actor and critic
-	# If you want to change this models, override this method.
-	#
-	# Return - (actor, critic)
+		path: saved to this path. (actor path, critic path)
+		'''
+		self.actor.save_weights(path[0])
+		self.critic.save_weights(path[1])
+
 	def build_models(self):
+		'''
+		Build actor and critic
+		If you want to change this models, override this method.
+
+		Return - (actor, critic)
+		'''
 		input_ = Input(shape=[self.state_size])
 		l1 = Dense(50, activation='relu', kernel_initializer='he_uniform')(input_)
 		l2 = Dense(50, activation='relu', kernel_initializer='he_uniform')(l1)
@@ -62,37 +70,43 @@ class A2C_Agent(object):
 
 		return actor, critic
 
-	# Select action using policy net.
-	#
-	# state: Network input.
-	#
-	# Return - Selected action
 	def select_action(self,state):
+		'''
+		Select action using policy net.
+
+		state: Network input.
+
+		Return - Selected action
+		'''
 		policy = self.actor.predict(state)[0]
 		return np.random.choice(self.action_size,1,p=policy)[0]
 
-	# Build actor update
-	#
-	# optimizer: Optimizer.
-	#
-	# Return - actor update function
 	def build_actor_update(self,optimizer):
+		'''
+		Build actor update
+
+		optimizer: Optimizer.
+
+		Return - actor update function
+		'''
 		action = t.placeholder(shape=[self.action_size])
 		advantage = t.placeholder(shape=[None])
 
-		action_prob = t.sum(action * self.actor.output,axis=1)
-		cross_entropy = t.log(action_prob) * advantage
-		loss = -t.sum(cross_entropy)
+		prob = t.sum(action * self.actor.output,axis=1)
+		j = t.log(prob) * advantage
+		loss = -t.sum(j)
 
 		updates = optimizer.get_updates(self.actor.trainable_weights,[],loss)
 		return t.function([self.actor.input,action,advantage],[],updates=updates)
 
-	# Build critic update
-	#
-	# optimizer: Optimizer.
-	#
-	# Return - Critic update function
 	def build_critic_update(self,optimizer):
+		'''
+		Build critic update
+
+		optimizer: Optimizer.
+
+		Return - Critic update function
+		'''
 		target = t.placeholder(shape=[None])
 
 		loss = t.mean(t.square(self.critic.output - target))
@@ -100,14 +114,16 @@ class A2C_Agent(object):
 		updates = optimizer.get_updates(self.critic.trainable_weights,[],loss)
 		return t.function([self.critic.input,target],[],updates=updates)
 
-	# Training
-	#
-	# state: Network input.
-	# action: Selected action.
-	# reward: Current reward.
-	# next_state: Next state, not current.
-	# done: gym.step()'s return value.
 	def train(self,state,action,reward,next_state,done):
+		'''
+		Training
+
+		state: Current state.
+		action: Selected action.
+		reward: Reward.
+		next_state: Next state, not current.
+		done: gym.step()'s return value.
+		'''
 		act = np.zeros([self.action_size])
 		act[action] = 1
 
@@ -122,5 +138,3 @@ class A2C_Agent(object):
 
 		self.actor_update([state,act,[advantage]])
 		self.critic_update([state,[target]])
-
-
