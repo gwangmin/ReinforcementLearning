@@ -20,11 +20,13 @@ Deep Reinforcement Learning Toolkit v1.0.0
 
 ## Contents
 ### Agent list(drlt.agents)
-* Deep SARSA : DeepSARSA_Agent() in /agents/deepSARSA.py
-* DQN(Deep Q Network) : DQN_Agent() in /agents/dqn.py
-* Monte-Carlo Policy Gradient(REINFORCE Algorithm) : REINFORCE_Agent() in /agents/mc_pg.py
-* A2C(Advantage Actor-Critic) : A2C_Agent() in /agents/a2c.py
+* Deep SARSA : DeepSARSA_Agent() in drlt/agents/deepSARSA.py
+* DQN(Deep Q Network) : DQN_Agent() in drlt/agents/dqn.py
+* Monte-Carlo Policy Gradient(REINFORCE Algorithm) : REINFORCE_Agent() in drlt/agents/mc_pg.py
+* A2C(Advantage Actor-Critic) : A2C_Agent() in drlt/agents/a2c.py
 
 ### For trace(drlt.trace)
-* Env_wapper() in /trace/env_wrapper.py
+* Env_wapper() in drlt/trace/env_wrapper.py
 
+
+[한국어 간단 설명](https://gwangmin.github.io/intro/2018/05/20/drlt.html)
