@@ -4,7 +4,7 @@ Repository for Reinforcement Learning
   
   
 ## Directories
-* drlt: Deep Reinforcement Learning Toolkit (package)
+* ReinforcementLearningFramework: Deep Reinforcement Learning Toolkit (package)
 
 ## Files
 * .gitignore: Ignore this file

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='drlt',
-		version='1.0.0',
+		version='1.1.0',
 		url='https://github.com/gwangmin/ReinforcementLearning/tree/master/drlt',
 		author='gwangmin',
 		author_email='ygm.gwangmin@gmail.com',
@@ -11,6 +11,6 @@ setup(name='drlt',
 		packages=find_packages(),
 		zip_safe=False,
 		install_requires=[
-		'tensorflow>=1.0.0','Keras>=2.0.2','gym>=0.9.2','numpy>=1.12.1','matplotlib>=2.0.0'
+		'tensorflow>=1.13.1','Keras>=2.2.4','gym>=0.9.2','numpy>=1.16.4','matplotlib>=2.0.0'
 		]
 		)
