@@ -2,5 +2,5 @@
 *mgr
 *__pycache__
 *.pyc
-*.ipynb__checkpoints
+*.ipynb_checkpoints
 
