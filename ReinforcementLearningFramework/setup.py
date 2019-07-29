@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='drlt',
-		version='1.0.5',
+		version='1.0.6',
 		url='https://github.com/gwangmin/ReinforcementLearning/tree/master/drlt',
 		author='gwangmin',
 		author_email='ygm.gwangmin@gmail.com',
