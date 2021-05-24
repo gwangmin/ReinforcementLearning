@@ -11,6 +11,6 @@ setup(name='drlt',
 		packages=find_packages(),
 		zip_safe=False,
 		install_requires=[
-		'tensorflow==1.15.4','Keras>=2.2.4','gym>=0.9.2','numpy>=1.16.4','matplotlib>=2.0.0'
+		'tensorflow==2.5.0','Keras>=2.2.4','gym>=0.9.2','numpy>=1.16.4','matplotlib>=2.0.0'
 		]
 		)
